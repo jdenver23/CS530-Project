@@ -10,3 +10,5 @@ def speak(text, lang):
     filename = "voice.mp3"
     tts.save(filename)
     playsound('./' + filename)
+
+speak("test", "en")
