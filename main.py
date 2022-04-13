@@ -1,6 +1,7 @@
 #Main Branch
 from fnmatch import translate
 import os
+import sys
 import time
 from playsound import playsound
 from pathlib import Path
@@ -16,10 +17,10 @@ def speak(text, language):
     playsound(filename)
     os.remove(filename)
 
-def get_audio():
+def get_audio(sent):
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        speak("You may now give an input", "en")
+        speak(sent, "en")
         audio = r.listen(source)
         said = ""
 
@@ -34,21 +35,24 @@ def translation(text, newLang):
     translator = Translator()
     return translator.translate(text, dest = newLang, src = 'en').text
 
+def didNotGetLanguage():
+    speak("I am sorry, I did not get that, let's try all of this again","en")
+    os.execl(sys.executable, sys.executable, *sys.argv)
+
 def getLanguage(fullname):
     match fullname:
         case "Spanish":
             return 'es'
         case _:
-            return 'es'
+            return didNotGetLanguage()
 
 def introduction():
     speak("Hello! Welcome to Team 12's final project: an English to world-wide language translator!", "en")
-    speak("What language would you like to translate into?", "en")
-    newLang = get_audio()
+    newLang = get_audio("What language would you like to translate into?")
+    longLang = newLang
     newLang = getLanguage(newLang)
-    speak("What would you like to translate?", "en")
-    text = get_audio()
+    text = get_audio("What would you like to translate?")
     translatedSentence = translation(text, newLang)
-    speak(translatedSentence, newLang)
+    speak(text + " in " + longLang + " is " + translatedSentence, newLang)
 
 introduction()
