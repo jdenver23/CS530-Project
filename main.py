@@ -9,6 +9,8 @@ import speech_recognition as sr
 from gtts import gTTS
 from googletrans import Translator
 
+#restart if language isnt detected
+
 LANGUAGES = {
     'af': 'afrikaans',
     'sq': 'albanian',
@@ -148,8 +150,11 @@ def didNotGetLanguage():
     os.execl(sys.executable, sys.executable, *sys.argv)
 
 def getLanguage(fullname):
-    new_dict = dict([(value, key) for key, value in LANGUAGES.items()])
-    return new_dict[fullname.lower()]
+    try:
+        new_dict = dict([(value, key) for key, value in LANGUAGES.items()])
+        return new_dict[fullname.lower()]
+    except:
+        didNotGetLanguage()
 
 def introduction():
     speak("Hello! Welcome to Team 12's final project: an English to world-wide language translator!", "en")
@@ -158,7 +163,17 @@ def introduction():
     newLang = getLanguage(newLang)
     text = get_audio("What would you like to translate?")
     translatedSentence = translation(text, newLang)
-    speak(text + " in " + longLang + " is ", 'en')
-    speak(translatedSentence, newLang)
+    try:
+        speak(translatedSentence, newLang)
+        speak(" is " + text + " in " + longLang, 'en')
+    except:
+        speak("Some languages, such as the chosen language, do not support text to speech, although I can print the translation", "en")
+    print(translatedSentence)
+
+def startAgain():
+    answerToStartingAgain = get_audio("Would you like to start again?")
+    if(answerToStartingAgain.__contains__("yes") or answerToStartingAgain.__contains__("Yes")): os.execl(sys.executable, sys.executable, *sys.argv)
+    else: speak("Thank you, take care!", "en")
 
 introduction()
+startAgain()
