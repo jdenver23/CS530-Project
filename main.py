@@ -143,9 +143,9 @@ def get_audio(sent):
 #            print("Exception: " + str(e))
     return said
 
-def translation(text, newLang):
+def translation(text, newLang, source):
     translator = Translator()
-    return translator.translate(text, dest = newLang, src = 'en').text
+    return translator.translate(text, dest = newLang, src = source).text
 
 def didNotGetLanguage():
     speak("I am sorry, I did not get that, let's try all of this again","en")
@@ -160,11 +160,13 @@ def getLanguage(fullname):
 
 def introduction():
     speak("Hello! Welcome to Team 12's final project: an English to world-wide language translator!", "en")
+    oldLang = get_audio("What language would you like to translate from?")
+    oldLang = getLanguage(oldLang)
     newLang = get_audio("What language would you like to translate into?")
     longLang = newLang
     newLang = getLanguage(newLang)
     text = get_audio("What would you like to translate?")
-    translatedSentence = translation(text, newLang)
+    translatedSentence = translation(text, newLang, oldLang)
     try:
         speak(translatedSentence, newLang)
         speak(" is " + text + " in " + longLang, 'en')
