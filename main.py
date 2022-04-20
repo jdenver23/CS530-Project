@@ -9,8 +9,6 @@ import speech_recognition as sr
 from gtts import gTTS
 from googletrans import Translator
 
-#restart if language isnt detected
-
 LANGUAGES = {
     'af': 'afrikaans',
     'sq': 'albanian',
@@ -159,7 +157,7 @@ def getLanguage(fullname):
         didNotGetLanguage()
 
 def introduction():
-    speak("Hello! Welcome to Team 12's final project: an English to world-wide language translator!", "en")
+    speak("Hello! Welcome to Team 12's final project: a world-wide language translator!", "en")
     oldLang = get_audio("What language would you like to translate from?")
     oldLang = getLanguage(oldLang)
     newLang = get_audio("What language would you like to translate into?")
