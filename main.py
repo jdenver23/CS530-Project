@@ -126,19 +126,19 @@ def speak(text, language):
     os.remove(filename)
 
 def get_audio(sent):
-    speak(sent, "en")
-    said = input()
-#    r = sr.Recognizer()
-#    with sr.Microphone() as source:
-#        speak(sent, "en")
-#        audio = r.listen(source)
-#        said = ""
-#
-#       try:
-#            said = r.recognize_google(audio)
-#            print(said)
-#        except Exception as e:
-#            print("Exception: " + str(e))
+#    speak(sent, "en")
+#    said = input()
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        speak(sent, "en")
+        audio = r.listen(source)
+        said = ""
+
+        try:
+            said = r.recognize_google(audio)
+            print(said)
+        except Exception as e:
+            print("Exception: " + str(e))
     return said
 
 def translation(text, newLang, source):
